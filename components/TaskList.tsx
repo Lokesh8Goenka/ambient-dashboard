@@ -77,7 +77,7 @@ export default function TaskList() {
       ) : (
         <ul className="space-y-2 mb-4 max-h-64 overflow-y-auto">
           {[...pending, ...done].map((task) => (
-            <li key={task.id} className="flex items-center gap-3 group">
+            <li key={task.id} className="flex items-center gap-3 rounded-xl px-2 py-2 -mx-2 hover:bg-gray-50 transition-colors">
               <button
                 onClick={() => toggleTask(task)}
                 className={`w-5 h-5 rounded-md border-2 flex-shrink-0 transition-all ${
@@ -97,9 +97,12 @@ export default function TaskList() {
               </span>
               <button
                 onClick={() => deleteTask(task.id)}
-                className="opacity-0 group-hover:opacity-100 text-gray-300 hover:text-red-400 transition-opacity text-xs"
+                aria-label="Delete task"
+                className="w-7 h-7 flex items-center justify-center rounded-lg text-gray-300 hover:text-red-500 hover:bg-red-50 transition-colors flex-shrink-0"
               >
-                ✕
+                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M6 7h12M9 7V5a1 1 0 011-1h4a1 1 0 011 1v2m-7 0v11a1 1 0 001 1h6a1 1 0 001-1V7" />
+                </svg>
               </button>
             </li>
           ))}

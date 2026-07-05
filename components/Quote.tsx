@@ -4,12 +4,14 @@ export default function Quote() {
   const quote = getDailyQuote();
 
   return (
-    <div className="flex flex-col justify-center h-full">
-      <div className="text-3xl text-indigo-300 leading-none mb-3 font-serif">&ldquo;</div>
-      <p className="text-gray-700 text-base leading-relaxed italic">
-        {quote.text}
-      </p>
-      <p className="mt-3 text-sm text-gray-400 font-medium">— {quote.author}</p>
+    <div className="flex items-center gap-4">
+      <div className="text-4xl text-indigo-200 leading-none font-serif select-none flex-shrink-0">&ldquo;</div>
+      <div className="min-w-0">
+        <p className="text-gray-700 text-sm md:text-base leading-relaxed italic">
+          {quote.text}
+        </p>
+        <p className="mt-1 text-xs text-gray-400 font-medium">— {quote.author}</p>
+      </div>
     </div>
   );
 }

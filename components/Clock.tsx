@@ -11,30 +11,24 @@ export default function Clock() {
     return () => clearInterval(id);
   }, []);
 
-  if (!time) return <div className="h-24" />;
+  if (!time) return <div className="h-9 w-32" />;
 
   const hours = time.getHours().toString().padStart(2, "0");
   const minutes = time.getMinutes().toString().padStart(2, "0");
-  const seconds = time.getSeconds().toString().padStart(2, "0");
-
-  const dayName = time.toLocaleDateString("en-US", { weekday: "long" });
-  const fullDate = time.toLocaleDateString("en-US", {
-    month: "long",
+  const date = time.toLocaleDateString("en-US", {
+    weekday: "short",
+    month: "short",
     day: "numeric",
-    year: "numeric",
   });
 
   return (
-    <div>
-      <div className="text-7xl font-thin tracking-tight text-gray-900 tabular-nums leading-none">
+    <div className="text-right leading-none">
+      <div className="text-2xl font-light tracking-tight text-gray-800 tabular-nums">
         {hours}
-        <span className="animate-pulse text-indigo-400">:</span>
+        <span className="text-indigo-400">:</span>
         {minutes}
-        <span className="text-4xl text-gray-400 ml-1">{seconds}</span>
       </div>
-      <div className="mt-3 text-gray-500 text-base font-medium">
-        {dayName}, {fullDate}
-      </div>
+      <div className="text-xs text-gray-400 mt-1 font-medium">{date}</div>
     </div>
   );
 }

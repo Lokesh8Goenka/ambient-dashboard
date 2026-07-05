@@ -1,6 +1,7 @@
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import Clock from "@/components/Clock";
+import Greeting from "@/components/Greeting";
 import Quote from "@/components/Quote";
 import HabitTracker from "@/components/HabitTracker";
 import TaskList from "@/components/TaskList";
@@ -16,27 +17,28 @@ export default async function DashboardPage() {
     .split(" ")[0];
 
   return (
-    <div className="min-h-screen bg-gray-50 p-4 md:p-8">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-gray-50 to-indigo-50/40 p-4 md:p-8">
       <div className="max-w-5xl mx-auto">
-        <div className="flex items-center justify-between mb-8">
-          <span className="text-sm text-gray-400">Hi, {firstName} 👋</span>
-          <SignOutButton />
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-          <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
+        {/* Header: greeting (left) + clock & sign out (right corner) */}
+        <header className="flex items-start justify-between mb-6">
+          <Greeting name={firstName} />
+          <div className="flex items-center gap-5">
             <Clock />
+            <SignOutButton />
           </div>
-          <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
-            <Quote />
-          </div>
+        </header>
+
+        {/* Quote — single full-width row */}
+        <div className="bg-white/80 backdrop-blur rounded-2xl shadow-sm border border-gray-100 px-6 py-5 mb-4">
+          <Quote />
         </div>
 
+        {/* Habits + Tasks — two columns */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
+          <div className="bg-white/80 backdrop-blur rounded-2xl shadow-sm border border-gray-100 p-6">
             <HabitTracker />
           </div>
-          <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
+          <div className="bg-white/80 backdrop-blur rounded-2xl shadow-sm border border-gray-100 p-6">
             <TaskList />
           </div>
         </div>
