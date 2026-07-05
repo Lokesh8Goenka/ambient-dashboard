@@ -14,7 +14,7 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
+    <div className="min-h-screen bg-gradient-to-br from-[#e0f7f1] via-[#eaf6fb] to-[#e3f2fd] flex items-center justify-center p-4">
       <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-10 w-full max-w-sm text-center">
         <div className="mb-8">
           <h1 className="text-2xl font-semibold text-gray-900 mb-2">Ambient Dashboard</h1>

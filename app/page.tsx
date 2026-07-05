@@ -17,7 +17,7 @@ export default async function DashboardPage() {
     .split(" ")[0];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-gray-50 to-indigo-50/40 p-4 md:p-8">
+    <div className="min-h-screen bg-gradient-to-br from-[#e0f7f1] via-[#eaf6fb] to-[#e3f2fd] p-4 md:p-8">
       <div className="max-w-5xl mx-auto">
         {/* Header: greeting (left) + clock & sign out (right corner) */}
         <header className="flex items-start justify-between mb-6">

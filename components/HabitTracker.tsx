@@ -98,7 +98,7 @@ export default function HabitTracker() {
           ))}
         </div>
       ) : (
-        <ul className="space-y-2 mb-4">
+        <ul className="space-y-1 mb-4">
           {habits.map((habit) => {
             const done = completedIds.has(habit.id);
             return (

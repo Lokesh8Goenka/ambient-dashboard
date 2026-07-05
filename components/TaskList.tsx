@@ -75,7 +75,7 @@ export default function TaskList() {
           ))}
         </div>
       ) : (
-        <ul className="space-y-2 mb-4 max-h-64 overflow-y-auto">
+        <ul className="space-y-1 mb-4 max-h-64 overflow-y-auto overflow-x-hidden px-2 -mx-2">
           {[...pending, ...done].map((task) => (
             <li key={task.id} className="flex items-center gap-3 rounded-xl px-2 py-2 -mx-2 hover:bg-gray-50 transition-colors">
               <button
