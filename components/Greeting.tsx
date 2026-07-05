@@ -14,8 +14,8 @@ export default function Greeting({ name }: { name: string }) {
   }, []);
 
   return (
-    <h1 className="text-xl md:text-2xl font-semibold text-gray-800">
-      {greeting}, {name} <span className="inline-block">👋</span>
+    <h1 className="font-display text-xl md:text-2xl font-medium tracking-tight text-gray-800">
+      {greeting}, {name}
     </h1>
   );
 }
