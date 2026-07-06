@@ -24,10 +24,20 @@ create table tasks (
   created_at timestamptz default now()
 );
 
+create table goals (
+  id uuid primary key default gen_random_uuid(),
+  user_id uuid references auth.users not null,
+  title text not null,
+  done boolean default false,
+  created_at timestamptz default now()
+);
+
 alter table habits enable row level security;
 alter table habit_completions enable row level security;
 alter table tasks enable row level security;
+alter table goals enable row level security;
 
 create policy "own habits" on habits for all using (auth.uid() = user_id);
 create policy "own completions" on habit_completions for all using (auth.uid() = user_id);
 create policy "own tasks" on tasks for all using (auth.uid() = user_id);
+create policy "own goals" on goals for all using (auth.uid() = user_id);

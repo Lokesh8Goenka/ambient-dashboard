@@ -5,6 +5,8 @@ import Greeting from "@/components/Greeting";
 import Quote from "@/components/Quote";
 import HabitTracker from "@/components/HabitTracker";
 import TaskList from "@/components/TaskList";
+import GoalList from "@/components/GoalList";
+import CollapsibleSection from "@/components/CollapsibleSection";
 import SignOutButton from "@/components/SignOutButton";
 
 export default async function DashboardPage() {
@@ -33,14 +35,21 @@ export default async function DashboardPage() {
           <Quote />
         </div>
 
-        {/* Habits + Tasks — two columns */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div className="bg-white/80 backdrop-blur rounded-2xl shadow-sm border border-gray-100 p-6">
+        {/* Personal Goals — full-width, collapsible */}
+        <div className="mb-4">
+          <CollapsibleSection title="Personal Goals" storageKey="goals">
+            <GoalList />
+          </CollapsibleSection>
+        </div>
+
+        {/* Habits + Tasks — two columns, collapsible */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 items-start">
+          <CollapsibleSection title="Today's Habits" storageKey="habits">
             <HabitTracker />
-          </div>
-          <div className="bg-white/80 backdrop-blur rounded-2xl shadow-sm border border-gray-100 p-6">
+          </CollapsibleSection>
+          <CollapsibleSection title="Tasks" storageKey="tasks">
             <TaskList />
-          </div>
+          </CollapsibleSection>
         </div>
       </div>
     </div>

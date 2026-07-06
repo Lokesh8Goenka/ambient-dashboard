@@ -84,12 +84,11 @@ export default function HabitTracker() {
 
   return (
     <div>
-      <div className="flex items-center justify-between mb-4">
-        <h2 className="text-sm font-semibold text-gray-500 uppercase tracking-wider">Today&apos;s Habits</h2>
-        {habits.length > 0 && (
-          <span className="text-xs text-gray-400">{doneCount}/{habits.length}</span>
-        )}
-      </div>
+      {habits.length > 0 && (
+        <div className="flex justify-end mb-2">
+          <span className="text-xs text-gray-400">{doneCount}/{habits.length} done today</span>
+        </div>
+      )}
 
       {loading ? (
         <div className="space-y-2">
