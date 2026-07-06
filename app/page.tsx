@@ -6,6 +6,7 @@ import Quote from "@/components/Quote";
 import HabitTracker from "@/components/HabitTracker";
 import TaskList from "@/components/TaskList";
 import GoalList from "@/components/GoalList";
+import Summarizer from "@/components/Summarizer";
 import CollapsibleSection from "@/components/CollapsibleSection";
 import SignOutButton from "@/components/SignOutButton";
 
@@ -46,6 +47,11 @@ export default async function DashboardPage() {
           <CollapsibleSection title="Tasks" storageKey="tasks">
             <TaskList />
           </CollapsibleSection>
+          <div className="md:col-span-2">
+            <CollapsibleSection title="AI Summariser" storageKey="summariser">
+              <Summarizer />
+            </CollapsibleSection>
+          </div>
         </div>
       </div>
     </div>

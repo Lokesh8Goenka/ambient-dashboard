@@ -12,12 +12,15 @@ export default function CollapsibleSection({
   children: React.ReactNode;
 }) {
   const [collapsed, setCollapsed] = useState(false);
-  const [ready, setReady] = useState(false);
+  const [animate, setAnimate] = useState(false);
 
   useEffect(() => {
     const saved = localStorage.getItem(`section:${storageKey}`);
     setCollapsed(saved === "1");
-    setReady(true);
+    // Enable transitions only after the initial collapsed state is committed,
+    // so a section that starts collapsed doesn't animate shut on page load.
+    const id = requestAnimationFrame(() => setAnimate(true));
+    return () => cancelAnimationFrame(id);
   }, [storageKey]);
 
   function toggle() {
@@ -39,7 +42,7 @@ export default function CollapsibleSection({
           {title}
         </h2>
         <svg
-          className={`w-4 h-4 text-gray-400 group-hover:text-gray-600 transition-transform duration-200 ${
+          className={`w-4 h-4 text-gray-400 group-hover:text-gray-600 transition-transform duration-300 ${
             collapsed ? "-rotate-90" : ""
           }`}
           fill="none"
@@ -51,7 +54,15 @@ export default function CollapsibleSection({
         </svg>
       </button>
 
-      {ready && !collapsed && <div className="mt-4">{children}</div>}
+      <div
+        className={`grid ${
+          animate ? "transition-all duration-300 ease-in-out" : ""
+        } ${collapsed ? "grid-rows-[0fr] opacity-0" : "grid-rows-[1fr] opacity-100"}`}
+      >
+        <div className="overflow-hidden min-h-0">
+          <div className="pt-4">{children}</div>
+        </div>
+      </div>
     </div>
   );
 }
