@@ -35,15 +35,11 @@ export default async function DashboardPage() {
           <Quote />
         </div>
 
-        {/* Personal Goals — full-width, collapsible */}
-        <div className="mb-4">
+        {/* Sections — uniform two-column grid; new features flow into the next cell */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 items-start">
           <CollapsibleSection title="Personal Goals" storageKey="goals">
             <GoalList />
           </CollapsibleSection>
-        </div>
-
-        {/* Habits + Tasks — two columns, collapsible */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 items-start">
           <CollapsibleSection title="Today's Habits" storageKey="habits">
             <HabitTracker />
           </CollapsibleSection>
