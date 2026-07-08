@@ -9,6 +9,7 @@ import GoalList from "@/components/GoalList";
 import Summarizer from "@/components/Summarizer";
 import CollapsibleSection from "@/components/CollapsibleSection";
 import SignOutButton from "@/components/SignOutButton";
+import ThemeToggle from "@/components/ThemeToggle";
 
 export default async function DashboardPage() {
   const supabase = await createClient();
@@ -20,19 +21,20 @@ export default async function DashboardPage() {
     .split(" ")[0];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#e0f7f1] via-[#eaf6fb] to-[#e3f2fd] p-4 md:p-8">
+    <div className="min-h-screen bg-gradient-to-br from-[#e0f7f1] via-[#eaf6fb] to-[#e3f2fd] dark:from-[#0b1120] dark:via-[#0d1424] dark:to-[#111a2e] p-4 md:p-8">
       <div className="max-w-5xl mx-auto">
-        {/* Header: greeting (left) + clock & sign out (right corner) */}
+        {/* Header: greeting (left) + clock, theme toggle & sign out (right corner) */}
         <header className="flex items-start justify-between mb-6">
           <Greeting name={firstName} />
-          <div className="flex items-center gap-5">
+          <div className="flex items-center gap-4">
             <Clock />
+            <ThemeToggle />
             <SignOutButton />
           </div>
         </header>
 
         {/* Quote — single full-width row */}
-        <div className="bg-white/80 backdrop-blur rounded-2xl shadow-sm border border-gray-100 px-6 py-5 mb-4">
+        <div className="bg-white/80 dark:bg-gray-800/70 backdrop-blur rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 px-6 py-5 mb-4">
           <Quote />
         </div>
 

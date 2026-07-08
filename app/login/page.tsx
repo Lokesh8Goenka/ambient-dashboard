@@ -14,16 +14,16 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#e0f7f1] via-[#eaf6fb] to-[#e3f2fd] flex items-center justify-center p-4">
-      <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-10 w-full max-w-sm text-center">
+    <div className="min-h-screen bg-gradient-to-br from-[#e0f7f1] via-[#eaf6fb] to-[#e3f2fd] dark:from-[#0b1120] dark:via-[#0d1424] dark:to-[#111a2e] flex items-center justify-center p-4">
+      <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 p-10 w-full max-w-sm text-center">
         <div className="mb-8">
-          <h1 className="text-2xl font-semibold text-gray-900 mb-2">Ambient Dashboard</h1>
-          <p className="text-gray-500 text-sm">Your personal life dashboard</p>
+          <h1 className="text-2xl font-semibold text-gray-900 dark:text-gray-100 mb-2">Ambient Dashboard</h1>
+          <p className="text-gray-500 dark:text-gray-400 text-sm">Your personal life dashboard</p>
         </div>
 
         <button
           onClick={signInWithGoogle}
-          className="w-full flex items-center justify-center gap-3 border border-gray-200 rounded-xl px-4 py-3 text-gray-700 font-medium hover:bg-gray-50 transition-colors"
+          className="w-full flex items-center justify-center gap-3 border border-gray-200 dark:border-gray-600 rounded-xl px-4 py-3 text-gray-700 dark:text-gray-200 font-medium hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
         >
           <svg width="18" height="18" viewBox="0 0 18 18" xmlns="http://www.w3.org/2000/svg">
             <path d="M17.64 9.205c0-.639-.057-1.252-.164-1.841H9v3.481h4.844a4.14 4.14 0 0 1-1.796 2.716v2.259h2.908c1.702-1.567 2.684-3.875 2.684-6.615Z" fill="#4285F4"/>

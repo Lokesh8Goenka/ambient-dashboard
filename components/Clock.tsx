@@ -23,12 +23,12 @@ export default function Clock() {
 
   return (
     <div className="text-right leading-none">
-      <div className="font-display text-2xl font-medium tracking-tight text-gray-800 tabular-nums">
+      <div className="font-display text-2xl font-medium tracking-tight text-gray-800 dark:text-gray-100 tabular-nums">
         {hours}
         <span className="text-indigo-400">:</span>
         {minutes}
       </div>
-      <div className="font-display text-xs text-gray-400 mt-1 font-medium tracking-wide">{date}</div>
+      <div className="font-display text-xs text-gray-400 dark:text-gray-500 mt-1 font-medium tracking-wide">{date}</div>
     </div>
   );
 }

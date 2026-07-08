@@ -1,5 +1,8 @@
 @import "tailwindcss";
 
+/* Enable class-based dark mode (toggle by adding `dark` on <html>) */
+@custom-variant dark (&:where(.dark, .dark *));
+
 :root {
   --background: #ffffff;
   --foreground: #171717;
@@ -17,6 +20,11 @@ body {
   background: #e6f4f7;
   color: #111827;
   font-family: var(--font-geist-sans), system-ui, sans-serif;
+}
+
+.dark body {
+  background: #0b1120;
+  color: #e5e7eb;
 }
 
 /* Markdown rendering for AI summaries */
@@ -47,3 +55,9 @@ body {
   color: #6b7280;
   margin: 0.5rem 0;
 }
+.dark .markdown-body h1,
+.dark .markdown-body h2,
+.dark .markdown-body h3,
+.dark .markdown-body strong { color: #e5e7eb; }
+.dark .markdown-body code { background: #1e293b; }
+.dark .markdown-body blockquote { border-left-color: #334155; color: #9ca3af; }

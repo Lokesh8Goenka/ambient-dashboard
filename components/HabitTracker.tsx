@@ -93,7 +93,7 @@ export default function HabitTracker() {
       {loading ? (
         <div className="space-y-2">
           {[1, 2, 3].map((i) => (
-            <div key={i} className="h-10 bg-gray-100 rounded-xl animate-pulse" />
+            <div key={i} className="h-10 bg-gray-100 dark:bg-gray-700 rounded-xl animate-pulse" />
           ))}
         </div>
       ) : (
@@ -103,14 +103,14 @@ export default function HabitTracker() {
             return (
               <li
                 key={habit.id}
-                className="flex items-center gap-3 rounded-xl px-2 py-2 -mx-2 hover:bg-gray-50 transition-colors"
+                className="flex items-center gap-3 rounded-xl px-2 py-2 -mx-2 hover:bg-gray-50 dark:hover:bg-gray-700/40 transition-colors"
               >
                 <button
                   onClick={() => toggleHabit(habit.id)}
                   className={`w-5 h-5 rounded-full border-2 flex-shrink-0 transition-all ${
                     done
                       ? "bg-indigo-500 border-indigo-500"
-                      : "border-gray-300 hover:border-indigo-400"
+                      : "border-gray-300 dark:border-gray-600 hover:border-indigo-400"
                   }`}
                 >
                   {done && (
@@ -119,7 +119,7 @@ export default function HabitTracker() {
                     </svg>
                   )}
                 </button>
-                <span className={`flex-1 text-sm ${done ? "text-gray-400 line-through" : "text-gray-700"}`}>
+                <span className={`flex-1 text-sm ${done ? "text-gray-400 line-through" : "text-gray-700 dark:text-gray-200"}`}>
                   {habit.name}
                 </span>
                 <button
@@ -147,7 +147,7 @@ export default function HabitTracker() {
           onChange={(e) => setNewHabit(e.target.value)}
           onKeyDown={(e) => e.key === "Enter" && addHabit()}
           placeholder="Add a habit…"
-          className="flex-1 text-sm border border-gray-200 rounded-xl px-3 py-2 outline-none focus:border-indigo-300 placeholder-gray-300"
+          className="flex-1 text-sm border border-gray-200 dark:border-gray-600 dark:bg-gray-900 dark:text-gray-100 rounded-xl px-3 py-2 outline-none focus:border-indigo-300 placeholder-gray-300 dark:placeholder-gray-600"
         />
         <button
           onClick={addHabit}

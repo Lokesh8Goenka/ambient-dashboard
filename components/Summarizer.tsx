@@ -105,7 +105,7 @@ export default function Summarizer() {
           }}
           placeholder="Paste an article link, or paste text to summarize…"
           rows={2}
-          className="w-full text-sm border border-gray-200 rounded-xl px-3 py-2 outline-none focus:border-sky-300 placeholder-gray-300 resize-none"
+          className="w-full text-sm border border-gray-200 dark:border-gray-600 dark:bg-gray-900 dark:text-gray-100 rounded-xl px-3 py-2 outline-none focus:border-sky-300 placeholder-gray-300 dark:placeholder-gray-600 resize-none"
         />
         <div className="flex items-center justify-between">
           <span className="text-xs text-gray-300">
@@ -125,7 +125,7 @@ export default function Summarizer() {
       {loading ? (
         <div className="space-y-2">
           {[1, 2].map((i) => (
-            <div key={i} className="h-12 bg-gray-100 rounded-xl animate-pulse" />
+            <div key={i} className="h-12 bg-gray-100 dark:bg-gray-700 rounded-xl animate-pulse" />
           ))}
         </div>
       ) : summaries.length === 0 ? (
@@ -137,8 +137,8 @@ export default function Summarizer() {
           {summaries.map((s) => {
             const open = expandedId === s.id;
             return (
-              <li key={s.id} className="border border-gray-100 rounded-xl overflow-hidden">
-                <div className="flex items-center gap-2 px-3 py-2 bg-gray-50/60">
+              <li key={s.id} className="border border-gray-100 dark:border-gray-700 rounded-xl overflow-hidden">
+                <div className="flex items-center gap-2 px-3 py-2 bg-gray-50/60 dark:bg-gray-900/40">
                   <button
                     onClick={() => setExpandedId(open ? null : s.id)}
                     className="flex-1 flex items-center gap-2 text-left min-w-0"
@@ -149,7 +149,7 @@ export default function Summarizer() {
                     >
                       <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
                     </svg>
-                    <span className="text-sm font-medium text-gray-700 truncate">{s.title}</span>
+                    <span className="text-sm font-medium text-gray-700 dark:text-gray-200 truncate">{s.title}</span>
                   </button>
                   {s.source && (
                     <a
@@ -172,7 +172,7 @@ export default function Summarizer() {
                   </button>
                 </div>
                 {open && (
-                  <div className="px-3 py-3 text-sm text-gray-600 leading-relaxed markdown-body">
+                  <div className="px-3 py-3 text-sm text-gray-600 dark:text-gray-300 leading-relaxed markdown-body">
                     <ReactMarkdown>{s.summary}</ReactMarkdown>
                   </div>
                 )}

@@ -100,19 +100,19 @@ export default function TaskList() {
       {loading ? (
         <div className="space-y-2">
           {[1, 2, 3].map((i) => (
-            <div key={i} className="h-10 bg-gray-100 rounded-xl animate-pulse" />
+            <div key={i} className="h-10 bg-gray-100 dark:bg-gray-700 rounded-xl animate-pulse" />
           ))}
         </div>
       ) : (
         <ul className="space-y-1 mb-4 max-h-64 overflow-y-auto overflow-x-hidden px-2 -mx-2">
           {[...pending, ...done].map((task) => (
-            <li key={task.id} className="flex items-center gap-3 rounded-xl px-2 py-2 -mx-2 hover:bg-gray-50 transition-colors">
+            <li key={task.id} className="flex items-center gap-3 rounded-xl px-2 py-2 -mx-2 hover:bg-gray-50 dark:hover:bg-gray-700/40 transition-colors">
               <button
                 onClick={() => toggleTask(task)}
                 className={`w-5 h-5 rounded-md border-2 flex-shrink-0 transition-all ${
                   task.done
                     ? "bg-emerald-500 border-emerald-500"
-                    : "border-gray-300 hover:border-emerald-400"
+                    : "border-gray-300 dark:border-gray-600 hover:border-emerald-400"
                 }`}
               >
                 {task.done && (
@@ -121,7 +121,7 @@ export default function TaskList() {
                   </svg>
                 )}
               </button>
-              <span className={`flex-1 text-sm ${task.done ? "text-gray-400 line-through" : "text-gray-700"}`}>
+              <span className={`flex-1 text-sm ${task.done ? "text-gray-400 line-through" : "text-gray-700 dark:text-gray-200"}`}>
                 {task.title}
               </span>
               <button
@@ -148,7 +148,7 @@ export default function TaskList() {
           onChange={(e) => setNewTask(e.target.value)}
           onKeyDown={(e) => e.key === "Enter" && addTask()}
           placeholder="Add a task…"
-          className="flex-1 text-sm border border-gray-200 rounded-xl px-3 py-2 outline-none focus:border-emerald-300 placeholder-gray-300"
+          className="flex-1 text-sm border border-gray-200 dark:border-gray-600 dark:bg-gray-900 dark:text-gray-100 rounded-xl px-3 py-2 outline-none focus:border-emerald-300 placeholder-gray-300 dark:placeholder-gray-600"
         />
         <button
           onClick={addTask}
@@ -160,7 +160,7 @@ export default function TaskList() {
 
       <button
         onClick={toggleHistory}
-        className="mt-3 text-xs text-gray-400 hover:text-gray-600 transition-colors"
+        className="mt-3 text-xs text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 transition-colors"
       >
         {showHistory ? "Hide completed" : "Show completed ›"}
       </button>

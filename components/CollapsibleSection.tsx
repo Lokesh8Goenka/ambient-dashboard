@@ -32,17 +32,17 @@ export default function CollapsibleSection({
   }
 
   return (
-    <div className="bg-white/80 backdrop-blur rounded-2xl shadow-sm border border-gray-100 p-6">
+    <div className="bg-white/80 dark:bg-gray-800/70 backdrop-blur rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 p-6">
       <button
         onClick={toggle}
         aria-expanded={!collapsed}
         className="w-full flex items-center justify-between group"
       >
-        <h2 className="font-display text-sm font-semibold text-gray-500 uppercase tracking-wider">
+        <h2 className="font-display text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">
           {title}
         </h2>
         <svg
-          className={`w-4 h-4 text-gray-400 group-hover:text-gray-600 transition-transform duration-300 ${
+          className={`w-4 h-4 text-gray-400 group-hover:text-gray-600 dark:group-hover:text-gray-200 transition-transform duration-300 ${
             collapsed ? "-rotate-90" : ""
           }`}
           fill="none"
