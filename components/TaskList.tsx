@@ -2,25 +2,31 @@
 
 import { useEffect, useState, useRef } from "react";
 import { createClient } from "@/lib/supabase/client";
+import { startOfTodayISO } from "@/lib/dates";
 
-type Task = { id: string; title: string; done: boolean };
+type Task = { id: string; title: string; done: boolean; completed_at: string | null };
 
 export default function TaskList() {
-  const supabase = createClient();
   const [tasks, setTasks] = useState<Task[]>([]);
+  const [archived, setArchived] = useState<Task[]>([]);
+  const [showHistory, setShowHistory] = useState(false);
+  const [historyLoaded, setHistoryLoaded] = useState(false);
   const [newTask, setNewTask] = useState("");
   const [loading, setLoading] = useState(true);
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     async function load() {
+      const supabase = createClient();
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) return;
 
+      // Active = still pending, OR completed today (so it stays visible today).
       const { data } = await supabase
         .from("tasks")
-        .select("id, title, done")
+        .select("id, title, done, completed_at")
         .eq("user_id", user.id)
+        .or(`done.eq.false,completed_at.gte.${startOfTodayISO()}`)
         .order("created_at");
 
       setTasks(data ?? []);
@@ -32,13 +38,14 @@ export default function TaskList() {
   async function addTask() {
     const title = newTask.trim();
     if (!title) return;
+    const supabase = createClient();
     const { data: { user } } = await supabase.auth.getUser();
     if (!user) return;
 
     const { data } = await supabase
       .from("tasks")
       .insert({ title, user_id: user.id, done: false })
-      .select("id, title, done")
+      .select("id, title, done, completed_at")
       .single();
 
     if (data) setTasks((prev) => [...prev, data]);
@@ -47,13 +54,36 @@ export default function TaskList() {
   }
 
   async function toggleTask(task: Task) {
-    await supabase.from("tasks").update({ done: !task.done }).eq("id", task.id);
-    setTasks((prev) => prev.map((t) => t.id === task.id ? { ...t, done: !t.done } : t));
+    const nowDone = !task.done;
+    const completed_at = nowDone ? new Date().toISOString() : null;
+    const supabase = createClient();
+    await supabase.from("tasks").update({ done: nowDone, completed_at }).eq("id", task.id);
+    setTasks((prev) => prev.map((t) => t.id === task.id ? { ...t, done: nowDone, completed_at } : t));
   }
 
   async function deleteTask(id: string) {
+    const supabase = createClient();
     await supabase.from("tasks").delete().eq("id", id);
     setTasks((prev) => prev.filter((t) => t.id !== id));
+  }
+
+  async function toggleHistory() {
+    const next = !showHistory;
+    setShowHistory(next);
+    if (next && !historyLoaded) {
+      const supabase = createClient();
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) return;
+      const { data } = await supabase
+        .from("tasks")
+        .select("id, title, done, completed_at")
+        .eq("user_id", user.id)
+        .eq("done", true)
+        .lt("completed_at", startOfTodayISO())
+        .order("completed_at", { ascending: false });
+      setArchived(data ?? []);
+      setHistoryLoaded(true);
+    }
   }
 
   const pending = tasks.filter((t) => !t.done);
@@ -63,7 +93,7 @@ export default function TaskList() {
     <div>
       {tasks.length > 0 && (
         <div className="flex justify-end mb-2">
-          <span className="text-xs text-gray-400">{done.length}/{tasks.length} done</span>
+          <span className="text-xs text-gray-400">{done.length}/{tasks.length} done today</span>
         </div>
       )}
 
@@ -127,6 +157,30 @@ export default function TaskList() {
           Add
         </button>
       </div>
+
+      <button
+        onClick={toggleHistory}
+        className="mt-3 text-xs text-gray-400 hover:text-gray-600 transition-colors"
+      >
+        {showHistory ? "Hide completed" : "Show completed ›"}
+      </button>
+
+      {showHistory && (
+        <ul className="mt-2 space-y-1 max-h-48 overflow-y-auto">
+          {archived.length === 0 ? (
+            <li className="text-xs text-gray-300 py-2">Nothing archived yet.</li>
+          ) : (
+            archived.map((t) => (
+              <li key={t.id} className="flex items-center justify-between text-xs text-gray-400 px-1 py-1">
+                <span className="line-through truncate">{t.title}</span>
+                <span className="flex-shrink-0 ml-2">
+                  {t.completed_at ? new Date(t.completed_at).toLocaleDateString("en-US", { month: "short", day: "numeric" }) : ""}
+                </span>
+              </li>
+            ))
+          )}
+        </ul>
+      )}
     </div>
   );
 }

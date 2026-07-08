@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import ReactMarkdown from "react-markdown";
 import { createClient } from "@/lib/supabase/client";
 
 type Summary = {
@@ -171,8 +172,8 @@ export default function Summarizer() {
                   </button>
                 </div>
                 {open && (
-                  <div className="px-3 py-3 text-sm text-gray-600 whitespace-pre-wrap leading-relaxed">
-                    {s.summary}
+                  <div className="px-3 py-3 text-sm text-gray-600 leading-relaxed markdown-body">
+                    <ReactMarkdown>{s.summary}</ReactMarkdown>
                   </div>
                 )}
               </li>

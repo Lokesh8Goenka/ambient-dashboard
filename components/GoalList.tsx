@@ -2,11 +2,15 @@
 
 import { useEffect, useState, useRef } from "react";
 import { createClient } from "@/lib/supabase/client";
+import { startOfTodayISO } from "@/lib/dates";
 
-type Goal = { id: string; title: string; done: boolean };
+type Goal = { id: string; title: string; done: boolean; completed_at: string | null };
 
 export default function GoalList() {
   const [goals, setGoals] = useState<Goal[]>([]);
+  const [archived, setArchived] = useState<Goal[]>([]);
+  const [showHistory, setShowHistory] = useState(false);
+  const [historyLoaded, setHistoryLoaded] = useState(false);
   const [newGoal, setNewGoal] = useState("");
   const [loading, setLoading] = useState(true);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -19,8 +23,9 @@ export default function GoalList() {
 
       const { data } = await supabase
         .from("goals")
-        .select("id, title, done")
+        .select("id, title, done, completed_at")
         .eq("user_id", user.id)
+        .or(`done.eq.false,completed_at.gte.${startOfTodayISO()}`)
         .order("created_at");
 
       setGoals(data ?? []);
@@ -39,7 +44,7 @@ export default function GoalList() {
     const { data } = await supabase
       .from("goals")
       .insert({ title, user_id: user.id, done: false })
-      .select("id, title, done")
+      .select("id, title, done, completed_at")
       .single();
 
     if (data) setGoals((prev) => [...prev, data]);
@@ -48,15 +53,36 @@ export default function GoalList() {
   }
 
   async function toggleGoal(goal: Goal) {
+    const nowDone = !goal.done;
+    const completed_at = nowDone ? new Date().toISOString() : null;
     const supabase = createClient();
-    await supabase.from("goals").update({ done: !goal.done }).eq("id", goal.id);
-    setGoals((prev) => prev.map((g) => g.id === goal.id ? { ...g, done: !g.done } : g));
+    await supabase.from("goals").update({ done: nowDone, completed_at }).eq("id", goal.id);
+    setGoals((prev) => prev.map((g) => g.id === goal.id ? { ...g, done: nowDone, completed_at } : g));
   }
 
   async function deleteGoal(id: string) {
     const supabase = createClient();
     await supabase.from("goals").delete().eq("id", id);
     setGoals((prev) => prev.filter((g) => g.id !== id));
+  }
+
+  async function toggleHistory() {
+    const next = !showHistory;
+    setShowHistory(next);
+    if (next && !historyLoaded) {
+      const supabase = createClient();
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) return;
+      const { data } = await supabase
+        .from("goals")
+        .select("id, title, done, completed_at")
+        .eq("user_id", user.id)
+        .eq("done", true)
+        .lt("completed_at", startOfTodayISO())
+        .order("completed_at", { ascending: false });
+      setArchived(data ?? []);
+      setHistoryLoaded(true);
+    }
   }
 
   const pending = goals.filter((g) => !g.done);
@@ -66,7 +92,7 @@ export default function GoalList() {
     <div>
       {goals.length > 0 && (
         <div className="flex justify-end mb-2">
-          <span className="text-xs text-gray-400">{done.length}/{goals.length} achieved</span>
+          <span className="text-xs text-gray-400">{done.length}/{goals.length} achieved today</span>
         </div>
       )}
 
@@ -130,6 +156,30 @@ export default function GoalList() {
           Add
         </button>
       </div>
+
+      <button
+        onClick={toggleHistory}
+        className="mt-3 text-xs text-gray-400 hover:text-gray-600 transition-colors"
+      >
+        {showHistory ? "Hide completed" : "Show completed ›"}
+      </button>
+
+      {showHistory && (
+        <ul className="mt-2 space-y-1 max-h-48 overflow-y-auto">
+          {archived.length === 0 ? (
+            <li className="text-xs text-gray-300 py-2">Nothing archived yet.</li>
+          ) : (
+            archived.map((g) => (
+              <li key={g.id} className="flex items-center justify-between text-xs text-gray-400 px-1 py-1">
+                <span className="line-through truncate">{g.title}</span>
+                <span className="flex-shrink-0 ml-2">
+                  {g.completed_at ? new Date(g.completed_at).toLocaleDateString("en-US", { month: "short", day: "numeric" }) : ""}
+                </span>
+              </li>
+            ))
+          )}
+        </ul>
+      )}
     </div>
   );
 }
